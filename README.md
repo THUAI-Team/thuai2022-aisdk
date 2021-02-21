@@ -17,4 +17,5 @@ $ make
 ## LICENSE
 
 MIT License
+
 nlohmann/json.hpp: MIT License
