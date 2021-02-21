@@ -6,6 +6,8 @@ THUAI 2021 抢金蛋 AI SDK
 
 C++: 在 `cpp/contestant_code.cpp`书写代码，再用cmake将 `cpp/` 下相应.cpp文件一同编译。
 
+提交时，只打包 `cpp/` 文件夹为 zip 文件提交。
+
 对于 Linux/Mac：
 ```bash
 $ cmake .
