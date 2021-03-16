@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <exception>
 
 #include "egg_sdk.h"
 #include "schema.h"
@@ -30,6 +31,9 @@ namespace thuai {
   }
 
   void GameState::set_status_of_player(int player_id_in_team, PlayerMovement status) {
+    if (status == PlayerMovement::SLIPPED) { // this makes no sense
+      throw std::out_of_range("manually setting status to slipped is not allowed, this can only be done by the simulator");
+    }
     m_reply["actions"][player_id_in_team]["action"] = status;
   }
 
@@ -45,8 +49,8 @@ namespace thuai {
     j = {{"x", facing.x}, {"y", facing.y}};
   }
 
-  void GameState::try_grab_egg(int player_id_in_team, int egg) {
-    m_reply["actions"][player_id_in_team]["grab"] = egg;
+  void GameState::try_grab_egg(int player_id_in_team, int egg_id) {
+    m_reply["actions"][player_id_in_team]["grab"] = egg_id;
   }
 
   void GameState::try_drop_egg(int player_id_in_team, double radian) {
