@@ -21,6 +21,8 @@ class PlayerStatus:
 class EggStatus:
   position = (.0, .0)
   holder = 0 # id of holder
+  score = 0
   def __init__(self, input_dict):
     self.position = convert_vec2d_to_tuple(input_dict['position'])
     self.holder = input_dict['holder']
+    self.score = input_dict['score']

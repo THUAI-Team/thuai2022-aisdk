@@ -12,7 +12,15 @@
 */
 namespace thuai {
   PlayerStatus GameState::get_player(Team team_id, int player_id_in_team) {
-    return m_teams[(int)team_id][player_id_in_team].get<PlayerStatus>();
+    auto player = m_teams[(int)team_id][player_id_in_team].get<PlayerStatus>();
+    player.holding = -1;
+    for (int i = 0; i < EGG_COUNT; i++) {
+      if (get_egg(i).holder == int(team_id) * PLAYER_PER_TEAM + player_id_in_team) {
+        player.holding = i;
+        break;
+      }
+    }
+    return player;
   }
 
   EggStatus GameState::get_egg(int egg_id) {

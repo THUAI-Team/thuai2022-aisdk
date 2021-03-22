@@ -7,6 +7,8 @@
 namespace thuai {
   using json = nlohmann::json;
 
+  const size_t EGG_COUNT = 15, PLAYER_COUNT = 12, PLAYER_PER_TEAM = 4;
+
   struct Vec2D {
     double x, y;
   };
@@ -26,14 +28,16 @@ namespace thuai {
   })
 
   struct PlayerStatus {
-    Vec2D position;
-    Vec2D facing;
-    PlayerMovement status;
+    Vec2D position; // coordinate of player
+    Vec2D facing;  // which direction is the player facing?
+    PlayerMovement status; // movement status
+    int holding; // id of the egg being held
   };
 
   struct EggStatus {
-    Vec2D position;
-    int holder;
+    Vec2D position; // coordinate of egg
+    int holder; // id of the player holding the egg
+    int score; // score of egg
   };
 
   void to_json(json& j, const Vec2D& vec);

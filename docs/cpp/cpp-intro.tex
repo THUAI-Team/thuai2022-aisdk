@@ -4,8 +4,17 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{gitinfo2}
+\usepackage{wasysym}
+\usepackage{multicol}
 \usepackage{footnote}
+\usepackage{listings}
+\usepackage{hhline}
+\usepackage{siunitx}
+\usepackage{fontspec}
 \usepackage[margin=1.5cm]{geometry}
+
+
+\lstset{basicstyle=\ttfamily,breaklines=true}
 
 \title{“巧取智夺”赛道C++ SDK}
 \author{软院、计算机系联合开发组}
@@ -23,7 +32,7 @@
 \begin{tabular}{|l|l|}\hline
 	文件名 & 备注\\ \hline
 	\texttt{CMakeLists.txt} & \fontshape\scdefault\selectfont\textsc{Cmake}构建系统的配置文件\\ \hline
-	\color[HTML]{CC0000}{\texttt{contestant\_code.cpp}} & 选手代码主文件 \\ \hline
+	\color{red}{\texttt{contestant\_code.cpp}} & 选手代码主文件 \\ \hline
 	\texttt{egg\_sdk.\{h,cpp\}} & SDK相关接口的声明，其中通信的具体实现选手无需理会 \\ \hline
 	\texttt{schema.\{h,cpp\}} & 对玩家状态、金蛋、坐标等API的声明和实现 \\ \hline
 	\texttt{singleton.h} & 单例模式实现 \\ \hline
@@ -41,5 +50,78 @@
 	对于开发，我们推荐使用 Visual Studio Code 和其 \textsc{Cmake} 插件的组合。你也可以使用 Visual Studio 进行开发，不过需要选择导入 \textsc{Cmake} 项目\footnote{参见 \href{https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-160}{微软官方文档}}。由于 Dev-C++ 对于 Cmake 的支持并不好，我们并不推荐用它进行开发。
 
 	在下载SDK后，你可以尝试运行 \textsc{Cmake} 进行一次构建，以检查构建环境。如果 Cmake 运行出错，请检查你的本地环境是否正确配置。
+
+\section{开发}
+
+理论上，你只需要修改\texttt{contestant\_code.cpp}这一文件中的 \texttt{update()} 函数。这个函数会在每秒10次\footnote{游戏运行于60fps，每6帧运行一次更新函数，即为每秒运行10次。}的更新中被调用，在其中你可以尝试做出各种动作。请注意：这些函数都不会返回运行的结果，且并不会在调用后立刻体现效果。所有的操作请求都会在 \texttt{update()} 运行结束后一并发送给游戏逻辑。因此，你需要在下一次\texttt{update()}运行时对是否成功执行动作进行检查。
+如果你想创建新的源代码文件，有可能需要对 \texttt{CMakeLists.txt} 进行修改，因其默认只包括了当前目录下（不含子目录）的源代码文件。
+
+\begin{table}[t]
+\caption{SDK提供的数据结构介绍\label{tab:ds}}
+\centering
+\begin{tabular}{|l|l||l|l|}\hhline{|--||--|}
+\multicolumn{2}{|c||}{PlayerStatus} & \multicolumn{2}{c|}{EggStatus}\\ \hhline{|--||--|}
+\texttt{position} & 玩家坐标 & \texttt{position} & 蛋坐标 \\\hhline{|--||--|}
+\texttt{facing} & 表示玩家朝向的单位向量 & \texttt{holder} & 拿蛋玩家编号，$-1$表示放在地上\\[0pt]\hhline{|-|-||--|}
+\texttt{status} & 玩家运动状态 & \texttt{score} & 蛋的分数 \\\hhline{|-|-|:==:}
+\texttt{holding} & 玩家拿的蛋编号，$-1$表示空手 &\multicolumn{2}{|c|}{PlayerMovement}  \\ \hhline{:==:|--|}
+\multicolumn{2}{|c||}{Team} &\texttt{STOPPED} & 玩家停在原地 \\ \hhline{|--||--|} 
+\texttt{RED} & 红队 & \texttt{WALKING} & 玩家正在走路  \\ \hhline{|--||--|}
+\texttt{YELLOW} & 黄队 &\texttt{RUNNING} & 玩家正在跑步  \\ \hhline{|--||--|}
+\texttt{BLUE} & 蓝队 & \texttt{SLIPPED} & 玩家因碰撞滑倒，本回合操作无效\\ \hhline{|--||--|}\end{tabular}
+\end{table}
+
+SDK中提供的主要数据结构见表\ref{tab:ds}。
+
+\subsection{接口}
+
+所有公共接口均位于 GameState 对象中。该对象采用单例模式，代码中可以用 \lstinline{GameState::instance()} 获得实例。
+
+\begin{description}
+\item[玩家控制] \lstinline{get_player(Team team_id, int player_id_in_team)}\\[-2pt]
+传入队伍和队内玩家编号，获得 PlayerStatus 结构体。若设总的编号为 $x$，则队伍$t$和队内编号$y$由以下公式得出：
+\[t = x \div 4, y = x \bmod 4\]
+其中 $t=0,1,2$分别对应红、黄、蓝队。
+
+\lstinline{set_status_of_player(int player_id_in_team, PlayerMovement status)}\\[-2pt]
+尝试设置自己队伍中玩家的移动状态。如果不满足条件，则设置失败。具体失败的情形为：
+\begin{itemize}\setlength\itemsep{0em}
+\item 该玩家已经摔倒：此时在站起来（恢复成静止）前不能进行任何操作
+\item 抱着蛋时尝试奔跑
+\item 体力值不够时尝试奔跑
+\end{itemize}
+
+请注意：该函数\color{red}没有返回值\color{black}，选手必须在下一次调用更新时手动检查是否已设置为指定状态。
+
+\lstinline{set_facing_of_player(int player_id_in_team, Vec2D facing)}\\[-2pt]
+传入一个向量和本队玩家编号，设置其朝向（用于走路、奔跑）。注意：若传入的是非单位向量，则会将其变为同向单位向量。传入零向量或者模长过小的向量时，评测逻辑行为未定义。
+
+\item[金蛋控制] \lstinline{get_egg(int egg_id)}\\[-2pt]
+传入金蛋编号，获得其基本信息。
+
+\lstinline{try_grab_egg(int player_id_in_team, int egg_id)}\\[-2pt]
+让队伍中某玩家尝试抓取金蛋。只有满足下列条件时，抓取才能成功：
+
+\begin{itemize}\setlength\itemsep{0em}
+\item 蛋在地上且糖豆人中心和蛋表面距离不超过 \SI{0.1}{\meter}（即到蛋中心距离不超过\SI{0.69}{\meter}）\footnote{$\diameter_{\text{玩家}}=\SI{0.48}{\meter},\diameter_{\text{金蛋}}=\SI{0.7}{\meter}$}
+\item 该蛋由别人拿取，且玩家和蛋距离同样不超过\SI{0.69}{\meter}
+\item 多人在同回合抢同一个蛋时，某人和蛋距离最近
+\end{itemize}
+
+\lstinline{try_drop_egg(int player_id_in_team, double radian)}\\[-2pt]
+让队伍中某玩家尝试放置金蛋。参数中的弧度为以$+x$轴为极轴的极坐标系下，放置蛋相对玩家的方位。蛋在放置后会和玩家刚好相切。
+只有满足下列条件时，放置才能成功：
+
+\begin{itemize}\setlength\itemsep{0em}
+\item 该玩家手中有蛋
+\item 蛋放下后不会卡在他人或其他蛋碰撞箱内
+\item 蛋放下后不会卡在墙内
+\end{itemize}
+
+\end{description}
+
+\subsection{上交代码}
+
+按照Saiblo的要求，提交 C++ 语言代码只需要上传 \texttt{cpp} 文件夹下的所有文件即可。注意上传文件中，\texttt{CMakeLists.txt} 必须位于压缩包的顶层文件夹。
 
 \end{document}
