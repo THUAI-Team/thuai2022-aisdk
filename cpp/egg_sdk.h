@@ -14,7 +14,10 @@ namespace thuai {
     void refresh_reply();
 
   public:
+    /* DO NOT CALL THIS. This is only used by internal functions. */
     void _run();
+
+    /* The functions below are designed to be used by the contestant. */
     PlayerStatus get_player(Team team, int player_id_in_team);
     EggStatus get_egg(int egg_id);
 

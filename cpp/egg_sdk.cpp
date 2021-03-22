@@ -7,6 +7,9 @@
 #include "stream_helper.h"
 #include "nlohmann/json.hpp"
 
+/*
+ * Contestants don't actually have to look at the contents of this file.
+*/
 namespace thuai {
   PlayerStatus GameState::get_player(Team team_id, int player_id_in_team) {
     return m_teams[(int)team_id][player_id_in_team].get<PlayerStatus>();

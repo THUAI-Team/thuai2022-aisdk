@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage{ctex}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{gitinfo2}
+\usepackage{footnote}
+\usepackage[margin=1.5cm]{geometry}
+
+\title{“巧取智夺”赛道C++ SDK}
+\author{软院、计算机系联合开发组}
+\date{\today\\版本：\gitAbbrevHash}
+
+\begin{document}
+\maketitle
+
+\section{简介}
+
+本SDK可以帮助你的AI和评测后端通信。这个SDK由以下文件组成：
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}\hline
+	文件名 & 备注\\ \hline
+	\texttt{CMakeLists.txt} & \fontshape\scdefault\selectfont\textsc{Cmake}构建系统的配置文件\\ \hline
+	\color[HTML]{CC0000}{\texttt{contestant\_code.cpp}} & 选手代码主文件 \\ \hline
+	\texttt{egg\_sdk.\{h,cpp\}} & SDK相关接口的声明，其中通信的具体实现选手无需理会 \\ \hline
+	\texttt{schema.\{h,cpp\}} & 对玩家状态、金蛋、坐标等API的声明和实现 \\ \hline
+	\texttt{singleton.h} & 单例模式实现 \\ \hline
+	\texttt{stream\_helper.\{h,cpp\}} & 通信流辅助函数，选手无需理会\\ \hline
+\end{tabular}
+\end{table}
+
+\section{环境配置}
+
+为运行SDK，你需要配置以下环境：
+	\begin{itemize}\setlength\itemsep{0em}
+		\item \textsc{Cmake} 3.10及以上版本
+		\item \textsc{Gcc}，\textsc{Msvc} 或 \textsc{Clang} 编译器
+	\end{itemize}
+	对于开发，我们推荐使用 Visual Studio Code 和其 \textsc{Cmake} 插件的组合。你也可以使用 Visual Studio 进行开发，不过需要选择导入 \textsc{Cmake} 项目\footnote{参见 \href{https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-160}{微软官方文档}}。由于 Dev-C++ 对于 Cmake 的支持并不好，我们并不推荐用它进行开发。
+
+	在下载SDK后，你可以尝试运行 \textsc{Cmake} 进行一次构建，以检查构建环境。如果 Cmake 运行出错，请检查你的本地环境是否正确配置。
+
+\end{document}
