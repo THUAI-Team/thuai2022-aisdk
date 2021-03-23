@@ -91,7 +91,7 @@ SDK中提供的主要数据结构见表\ref{tab:ds}。
 \item 体力值不够时尝试奔跑
 \end{itemize}
 
-请注意：该函数\color{red}没有返回值\color{black}，选手必须在下一次调用更新时手动检查是否已设置为指定状态。
+请注意：这些设置类函数\color{red}都没有返回值\color{black}，选手必须在下一次调用更新时手动检查是否已设置为指定状态。
 
 \lstinline{set_facing_of_player(int player_id_in_team, Vec2D facing)}\\[-2pt]
 传入一个向量和本队玩家编号，设置其朝向（用于走路、奔跑）。注意：若传入的是非单位向量，则会将其变为同向单位向量。传入零向量或者模长过小的向量时，评测逻辑行为未定义。
