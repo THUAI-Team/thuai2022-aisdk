@@ -36,4 +36,8 @@ cd ../py-sdk-$rev
 zip -r py-sdk-$rev.zip ./*
 mv py-sdk-$rev.zip ../
 
+cd ..
+rm -rf cpp-sdk-$rev
+rm -rf py-sdk-$rev
+
 echo "Built successfully"
