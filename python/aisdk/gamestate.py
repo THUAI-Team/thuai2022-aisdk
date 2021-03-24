@@ -17,7 +17,7 @@ reply = None
 def _refresh_reply():
   global reply
   reply = {
-    'state': 0,
+    'state': state,
     'actions': [{}, {}, {}, {}]
   }
   for i in range(4):
