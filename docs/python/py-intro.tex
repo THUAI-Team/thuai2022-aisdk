@@ -30,7 +30,7 @@
 
 \dirtree{%
 .1 python.
-.2 ai.py\DTcomment{选手AI代码文件}.
+.2 main.py\DTcomment{选手AI代码文件}.
 .2 aisdk\DTcomment{SDK包}.
 .3 \_\_init\_\_.py \DTcomment{\texttt{aisdk}包定义}.
 .3 entities.py\DTcomment{描述玩家和金蛋状态的类型}.
@@ -46,11 +46,11 @@
 		\item \textsc{Python} 3.7及以上版本
 	\end{itemize}
 	对于开发，我们推荐使用 Visual Studio Code 和其 \textsc{Python} 插件的组合。你也可以使用 JetBrains PyCharm 或者其他你喜欢的集成开发环境进行开发。
-	在下载SDK后，你可以尝试运行 \texttt{ai.py}，以检查本地运行环境。如果运行出错，请检查你的本地 \textsc{Python} 环境是否正确配置。
+	在下载SDK后，你可以尝试运行 \texttt{main.py}，以检查本地运行环境。如果运行出错，请检查你的本地 \textsc{Python} 环境是否正确配置。
 
 \section{开发}
 
-理论上，你只需要修改\texttt{ai.py}这一文件中的 \texttt{update()} 函数。这个函数会在每秒10次\footnote{游戏运行于60fps，每6帧运行一次更新函数，即为每秒运行10次。}的更新中被调用，在其中你可以尝试做出各种动作。请注意：这些函数都不会返回运行的结果，且并不会在调用后立刻体现效果。所有的操作请求都会在 \texttt{update()} 运行结束后一并发送给游戏逻辑。因此，你需要在下一次\texttt{update()}运行时对是否成功执行动作进行检查。
+理论上，你只需要修改\texttt{main.py}这一文件中的 \texttt{update()} 函数。这个函数会在每秒10次\footnote{游戏运行于60fps，每6帧运行一次更新函数，即为每秒运行10次。}的更新中被调用，在其中你可以尝试做出各种动作。请注意：这些函数都不会返回运行的结果，且并不会在调用后立刻体现效果。所有的操作请求都会在 \texttt{update()} 运行结束后一并发送给游戏逻辑。因此，你需要在下一次\texttt{update()}运行时对是否成功执行动作进行检查。
 
 \begin{table}[t]
 \caption{SDK提供的数据结构介绍\label{tab:ds}}
