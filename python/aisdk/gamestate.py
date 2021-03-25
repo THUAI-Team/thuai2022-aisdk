@@ -33,7 +33,13 @@ def _write_to_judger():
 # public interfaces below
 
 def get_player(team_id: int, player_id_in_team: int) -> PlayerStatus:
-  return PlayerStatus(teams[team_id][player_id_in_team])
+  player_id = team_id * 4 + player_id_in_team
+  holding = -1
+  for i in range(15):
+    if eggs[i]['holder'] == player_id:
+      holding = i
+      break
+  return PlayerStatus(teams[team_id][player_id_in_team], holding=holding)
 
 
 def get_egg(egg_id: int) -> EggStatus:
