@@ -1,5 +1,5 @@
 from enum import Enum
-
+from sys import stderr
 
 class PlayerMovement(Enum):
   STOPPED = 0

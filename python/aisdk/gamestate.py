@@ -1,7 +1,8 @@
 import typing
 import math
+import sys
 
-from .utils import write_message_dict
+from .utils import write_message_dict, dist
 from .player_movement import PlayerMovement, MovementNotAllowedError
 from .entities import PlayerStatus, EggStatus, convert_tuple_to_vec2d
 
@@ -39,7 +40,7 @@ def get_player(team_id: int, player_id_in_team: int) -> PlayerStatus:
     if eggs[i]['holder'] == player_id:
       holding = i
       break
-  return PlayerStatus(teams[team_id][player_id_in_team], holding=holding)
+  return PlayerStatus(teams[team_id][player_id_in_team],holding=holding)
 
 
 def get_egg(egg_id: int) -> EggStatus:
@@ -53,12 +54,11 @@ def set_status_of_player(player_id_in_team: int, status: PlayerMovement):
 
 
 def set_facing_of_player(player_id_in_team: int, facing: typing.Tuple[float, float]):
-  vec_len = math.dist(facing, (0, 0))
+  vec_len = dist(facing, (0, 0))
   if vec_len < 1e-7:
     facing = 0, 0
   else:
     facing = tuple(map(lambda x: x / vec_len, facing))
-  
   reply['actions'][player_id_in_team]['facing'] = convert_tuple_to_vec2d(facing)
 
 

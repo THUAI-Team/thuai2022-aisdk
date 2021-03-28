@@ -2,6 +2,7 @@
 
 import json
 import sys
+from math import sqrt
 from typing import Dict
 
 
@@ -15,3 +16,6 @@ def write_message_dict(d: Dict):
     j = json.dumps(d, indent=None)
     sys.stdout.buffer.write(logic_convert_byte(j))
     sys.stdout.flush()
+
+def dist(p, q):
+    return sqrt(sum((px - qx) ** 2.0 for px, qx in zip(p, q)))
