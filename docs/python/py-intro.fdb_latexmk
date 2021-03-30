@@ -1,9 +1,9 @@
 # Fdb version 3
-["pdflatex"] 1617104335 "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.tex" "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.pdf" "py-intro" 1617104336
-  "../../.git/gitHeadInfo.gin" 1617100777 587 55ffb9aeebdf6dde01699e5f8ff4533e ""
-  "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.aux" 1617104336 1383 f4aa10da1d6cf98110ac841bdb6394de ""
+["pdflatex"] 1617104377 "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.tex" "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.pdf" "py-intro" 1617104378
+  "../../.git/gitHeadInfo.gin" 1617104376 588 4a9c7ea16edc94d8bf84b828d1ccd944 ""
+  "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.aux" 1617104378 1383 f4aa10da1d6cf98110ac841bdb6394de ""
   "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.tex" 1617104334 7775 e51309be5e9b5bd4a671536e41888340 ""
-  "/dev/null" 1617104336 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "/dev/null" 1617104378 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2020basic/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2020basic/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1136768653 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/local/texlive/2020basic/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -118,12 +118,12 @@
   "/usr/local/texlive/2020basic/texmf-dist/web2c/texmf.cnf" 1583102494 39451 60d7debd9ef8ece44cbe965493576c2d ""
   "/usr/local/texlive/2020basic/texmf-var/web2c/xetex/xelatex.fmt" 1586782267 4226608 cbb1b71728c0795b1e6b77ab9fa85569 ""
   "/usr/local/texlive/2020basic/texmf.cnf" 1586277716 628 4346f9a816ba8e5dc36d93d5100b369e ""
-  "py-intro.aux" 1617104336 1383 f4aa10da1d6cf98110ac841bdb6394de "pdflatex"
-  "py-intro.out" 1617104336 355 4982616c955dbb6681168e921764ccb7 "pdflatex"
+  "py-intro.aux" 1617104378 1383 f4aa10da1d6cf98110ac841bdb6394de "pdflatex"
+  "py-intro.out" 1617104378 355 4982616c955dbb6681168e921764ccb7 "pdflatex"
   "py-intro.tex" 1617104334 7775 e51309be5e9b5bd4a671536e41888340 ""
   (generated)
-  "py-intro.log"
   "py-intro.aux"
   "py-intro.out"
+  "py-intro.log"
   "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.pdf"
   "/Users/panda2134/Desktop/thuai/ai-sdk/docs/python/py-intro.log"
