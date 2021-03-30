@@ -7,8 +7,10 @@ from random import randint
 def update():
   # This Simple AI sets everyone on your team running along -x axis.
   for i in range(4):
-    gs.set_facing_of_player(i, (-1, 0))
-    gs.set_status_of_player(i, PlayerMovement.RUNNING)
+    player = gs.Player.get_player_by_team_and_id(gs.current_team, i)
+
+    player.facing = (-1, 0)
+    player.status = PlayerMovement.RUNNING
 
 
 if __name__ == '__main__':
