@@ -56,15 +56,15 @@
 \caption{SDK提供的数据结构介绍\label{tab:ds}}
 \centering
 \begin{tabular}{|l|l||l|l|}\hhline{|--||--|}
-\multicolumn{2}{|c||}{PlayerStatus} & \multicolumn{2}{c|}{EggStatus}\\ \hhline{|--||--|}
+\multicolumn{2}{|c||}{Player} & \multicolumn{2}{c|}{Egg}\\ \hhline{|--||--|}
 \texttt{position} & 玩家坐标 & \texttt{position} & 蛋坐标 \\\hhline{|--||--|}
-\texttt{facing} & 表示玩家朝向的单位向量 & \texttt{holder} & 拿蛋玩家编号，$-1$表示放在地上\\[0pt]\hhline{|-|-||--|}
+\texttt{facing} & 表示玩家朝向的单位向量 & \texttt{holder} & 拿蛋玩家，\texttt{None} 表示放在地上\\[0pt]\hhline{|-|-||--|}
 \texttt{status} & 玩家运动状态 & \texttt{score} & 蛋的分数 \\\hhline{|-|-|:==:}
-\texttt{holding} & 玩家拿的蛋编号，$-1$表示空手 &\multicolumn{2}{c|}{PlayerMovement}  \\ \hhline{:==:|--|}
-\multicolumn{2}{|c||}{Team (以整数表示)} &\texttt{STOPPED} & 玩家停在原地 \\ \hhline{|--||--|} 
-\texttt{0} & 红队 & \texttt{WALKING} & 玩家正在走路  \\ \hhline{|--||--|}
-\texttt{1} & 黄队 &\texttt{RUNNING} & 玩家正在跑步  \\ \hhline{|--||--|}
-\texttt{2} & 蓝队 & \texttt{SLIPPED} & 玩家因碰撞滑倒，本回合操作无效\\ \hhline{|--||--|}\end{tabular}
+\texttt{holding} & 玩家拿的蛋，\texttt{None}表示空手 &\multicolumn{2}{c|}{PlayerMovement}  \\ \hhline{:==:|--|}
+\multicolumn{2}{|c||}{Team} &\texttt{STOPPED} & 玩家停在原地 \\ \hhline{|--||--|} 
+\texttt{RED} & 红队 & \texttt{WALKING} & 玩家正在走路  \\ \hhline{|--||--|}
+\texttt{YELLOW} & 黄队 &\texttt{RUNNING} & 玩家正在跑步  \\ \hhline{|--||--|}
+\texttt{BLUE} & 蓝队 & \texttt{SLIPPED} & 玩家因碰撞滑倒，本回合操作无效\\ \hhline{|--||--|}\end{tabular}
 \end{table}
 
 SDK中提供的主要数据结构见表\ref{tab:ds}。
@@ -74,50 +74,94 @@ SDK中提供的主要数据结构见表\ref{tab:ds}。
 所有公共接口均位于 \texttt{gamestate.py} 中。根据 \textsc{Python} 的模块导入，模块本身即为单例模式。代码中要使用相应接口，只需要导入 \texttt{aisdk.gamestate} 这一模块即可。
 
 \begin{description}
-\item[玩家控制] \lstinline{get_player(team_id: int, player_id_in_team: int)}\\[-2pt]
-传入队伍和队内玩家编号，获得 PlayerStatus对象。若设总的编号为 $x$，则队伍$t$和队内编号$y$由以下公式得出：
+\item[玩家控制] 通过对玩家对象属性的读取和赋值，以尝试获取和修改玩家的具体信息。下文中 \lstinline{p} 代表玩家对象。
+
+注意：在对玩家代理对象赋值操作后，立刻读取得到的仍然是原来的值！这是因为修改状态的操作尚未被评测端接受，所有修改操作会在更新回调结束后一并发送给评测端。你应当在下次调用更新回调函数时加以检查。
+\begin{itemize}
+	\item
+  \lstinline{Player(player_id: int)}\\
+  \lstinline{Player.get_player_by_team_and_id(team_id: Team, player_id_in_team: int)}\\[-2pt]
+获得 Player 对象。若设总的编号为 $x$，则队伍$t$和队内编号$y$由以下公式得出：
 \[t = x \div 4, y = x \bmod 4\]
 其中 $t=0,1,2$分别对应红、黄、蓝队。
 
-\lstinline{set_status_of_player(player_id_in_team: int, status: PlayerMovement)}\\[-2pt]
-尝试设置自己队伍中玩家的移动状态。如果不满足条件，则设置失败。具体失败的情形为：
+\item \lstinline{p.player_id}\\[-2pt]
+只读。玩家的 id，范围为 $0 \sim 11$.
+
+\item \lstinline{p.position}\\[-2pt]
+只读。玩家的坐标。
+
+\item \lstinline{p.team, p.id_on_team}\\[-2pt]
+只读。获得这个玩家所在队伍和队内编号，即上文的 $t, y$。
+
+\item \lstinline{p.holding}\\[-2pt]
+只读。玩家拿的蛋对应的 \lstinline{Egg} 对象，若为拿蛋即为 \lstinline{None}.
+
+\item
+\lstinline{p.status}\\[-2pt]
+通过对玩家对象\lstinline{p} 的 \lstinline{status} 属性进行赋值，以尝试设置移动状态。
+赋的新值必须为 \lstinline{PlayerMovement} 类型；尝试改变不在当前AI队伍的玩家的状态会导致抛出异常。
+如果不满足条件，则设置失败。具体失败的情形为：
 \begin{itemize}\setlength\itemsep{0em}
 \item 该玩家已经摔倒：此时在站起来（恢复成静止）前不能进行任何操作
 \item 抱着蛋时尝试奔跑
 \item 体力值不够时尝试奔跑
 \end{itemize}
 
-请注意：这些设置类函数\color{red}都没有返回值\color{black}，选手必须在下一次调用更新时手动检查是否已设置为指定状态。
+\item
+\lstinline{p.facing}\\[-2pt]
+直接读取值即为玩家当前朝向。通过给玩家对象 \lstinline{p} 的 \lstinline{facing} 属性赋值，设置其朝向（用于走路、奔跑）。注意：若赋值的是非单位向量，则会将其变为同向单位向量。传入零向量或者模长过小的向量时，评测逻辑行为未定义。
 
-\lstinline{set_facing_of_player(player_id_in_team: int, facing: Tuple[float, float])}\\[-2pt]
-传入一个向量和本队玩家编号，设置其朝向（用于走路、奔跑）。注意：若传入的是非单位向量，则会将其变为同向单位向量。传入零向量或者模长过小的向量时，评测逻辑行为未定义。
+\end{itemize}
 
-\item[金蛋控制] \lstinline{get_egg(egg_id: int)}\\[-2pt]
-传入金蛋编号，获得其基本信息。
+\item[金蛋基本信息] 通过对 \lstinline{Egg} 对象属性的读取，以尝试获取金蛋的具体信息。下文中 \lstinline{e} 代表金蛋对象。
 
-\lstinline{try_grab_egg(player_id_in_team: int, egg_id: int)}\\[-2pt]
-让队伍中某玩家尝试抓取金蛋。只有满足下列条件时，抓取才能成功：
+\begin{itemize}
+\item
+\lstinline{Egg(egg_id: int)}\\[-2pt]
+传入金蛋编号，获得其基本信息对象。
 
+\item \lstinline{e.egg_id}\\[-2pt]
+只读。金蛋 \lstinline{e} 的id.
+
+\item \lstinline{e.position}\\[-2pt]
+只读。金蛋的坐标。
+
+\item \lstinline{e.holder}\\[-2pt]
+只读。拿着这个金蛋的玩家对象，若为 \lstinline{None} 表示蛋在地上。
+
+\item \lstinline{e.score}\\[-2pt]
+只读。金蛋的分数。
+\end{itemize}
+
+\item[金蛋控制] 下文中 \lstinline{p} 代表玩家对象。
+
+\begin{itemize}
+
+\item
+\lstinline{p.try_grab_egg(egg_id: int)}\\[-2pt]
+让当前AI队伍中某玩家对象 \lstinline{p} 尝试抓取金蛋。只有满足下列条件时，抓取才能成功：
 \begin{itemize}\setlength\itemsep{0em}
 \item 蛋在地上且糖豆人中心和蛋表面距离不超过 \SI{0.1}{\meter}（即到蛋中心距离不超过\SI{0.69}{\meter}）\footnote{$\diameter_{\text{玩家}}=\SI{0.48}{\meter},\diameter_{\text{金蛋}}=\SI{0.7}{\meter}$}
 \item 该蛋由别人拿取，且玩家和蛋距离同样不超过\SI{0.69}{\meter}
 \item 多人在同回合抢同一个蛋时，某人和蛋距离最近
 \end{itemize}
 
-\lstinline{try_drop_egg(player_id_in_team: int, radian: float)}\\[-2pt]
-让队伍中某玩家尝试放置金蛋。参数中的弧度为以$+x$轴为极轴的极坐标系下，放置蛋相对玩家的方位。蛋在放置后会和玩家刚好相切。
+\item
+\lstinline{p.try_drop_egg(radian: float)}\\[-2pt]
+让当前AI队伍中某玩家对象 \lstinline{p} 尝试放置金蛋。参数中的弧度为以$+x$轴为极轴的极坐标系下，放置蛋相对玩家的方位。蛋在放置后会和玩家刚好相切。
 只有满足下列条件时，放置才能成功：
-
-\begin{itemize}\setlength\itemsep{0em}
-\item 该玩家手中有蛋
-\item 蛋放下后不会卡在他人或其他蛋碰撞箱内
-\item 蛋放下后不会卡在墙内
+	\begin{itemize}\setlength\itemsep{0em}
+	\item 该玩家手中有蛋
+	\item 蛋放下后不会卡在他人或其他蛋碰撞箱内
+	\item 蛋放下后不会卡在墙内
+	\end{itemize}
 \end{itemize}
 
 \end{description}
 
 \subsection{上交代码}
 
-按照Saiblo的要求，提交 Python 语言代码只需要上传 \texttt{cpp} 文件夹下的所有文件即可。注意上传文件中，\texttt{CMakeLists.txt} 必须位于压缩包的顶层文件夹。
+按照Saiblo的要求，提交 Python 语言代码只需要打包上传SDK文件夹下的所有文件即可。注意上传文件中，\texttt{main.py} 必须位于压缩包的顶层文件夹。
 
 \end{document}

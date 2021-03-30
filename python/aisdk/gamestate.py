@@ -54,12 +54,10 @@ def get_current_team() -> Team:
   return Team(_current_team)
 
 class Player:
-  def __init__(self, input_dict, holding=-1, player_id=None):
-    """This should NEVER be called by users! Use get_player* functions instead."""
-    self._position = convert_vec2d_to_tuple(input_dict['position'])
-    self._facing = convert_vec2d_to_tuple(input_dict['facing'])
-    self._status = PlayerMovement[input_dict['status'].upper()]
-    self._holding = holding
+  """This is actually a delegation class for accessing the internal dict of gamestate.py"""
+  def __init__(self, player_id):
+    """Get the Player object using player_id."""
+    assert(player_id >= 0 and player_id < 12)
     self._player_id = player_id
   
   @property
@@ -80,12 +78,12 @@ class Player:
   @property
   def position(self) -> VecTuple:
     """Get the coordinate of player"""
-    return self._position
+    return convert_vec2d_to_tuple(_teams[self.team][self.id_on_team]['position'])
   
   @property
   def facing(self) -> VecTuple:
     """Get the facing of player"""
-    return self._facing
+    return convert_vec2d_to_tuple(_teams[self.team][self.id_on_team]['facing'])
   
   @facing.setter
   def facing(self, new_facing: VecTuple):
@@ -93,16 +91,15 @@ class Player:
     Set the facing of player.
     You can only set the facing of a player on your team.
     """
-    if _current_team != self._player_id // 4:
+    if _current_team != self.team:
       raise AttributeError('Not on your team, cannot change `facing`!')
     else:
-      self._facing = new_facing
-      _set_facing_of_player(self._player_id % 4, new_facing)
+      _set_facing_of_player(self.team, new_facing)
   
   @property
   def status(self) -> PlayerMovement:
     """Get the status of player"""
-    return self._status
+    return PlayerMovement[_teams[self.team][self.id_on_team]['status'].upper()]
   
   @status.setter
   def status(self, new_status: PlayerMovement):
@@ -113,7 +110,6 @@ class Player:
     if _current_team != self._player_id // 4:
       raise AttributeError('Not on your team, cannot change `status`!')
     else:
-      self._status = new_status
       _set_status_of_player(self._player_id % 4, new_status)
   
   @property
@@ -122,8 +118,14 @@ class Player:
     Return the egg that is being held.
     If no egg is held by this player, return None.
     """
-    if self._holding != -1:
-      return Egg.get_egg(self._holding)
+    _holding = -1
+    for i in range(15):
+      if _eggs[i]['holder'] == self._player_id:
+        _holding = i
+        break
+    
+    if _holding != -1:
+      return Egg(_holding)
     else:
       return None
   
@@ -131,7 +133,7 @@ class Player:
     """
     Try to grab the egg of id egg_id
     """
-    _try_grab_egg(self._player_id % 4, egg_id)
+    _try_grab_egg(self.id_on_team, egg_id)
   
   def try_drop_egg(self, radian: float):
     """
@@ -139,37 +141,20 @@ class Player:
 
     radian is the angle between +x and the ray between player and the dropped egg.
     """
-    if self._holding == -1:
+    if self.holding == -1:
       raise RuntimeError('This player is not holding an egg')
     else:
-      self._holding = -1
-      _try_drop_egg(self._player_id % 4, radian)
-
-  @staticmethod
-  def get_player(player_id: int):
-    """Get the Player object using player_id."""
-    team_id = player_id // 4
-    player_id_on_team = player_id % 4
-    
-    holding = -1
-    for i in range(15):
-      if _eggs[i]['holder'] == player_id:
-        holding = i
-        break
-    return Player(_teams[team_id][player_id_on_team], holding, player_id)
+      _try_drop_egg(self.id_on_team, radian)
   
   @staticmethod
   def get_player_by_team_and_id(team: Team, player_id_on_team: int):
     """Get the Player object using team and player in on the team."""
-    return Player.get_player(team * 4 + player_id_on_team)
+    return Player(team * 4 + player_id_on_team)
 
 
 class Egg:
-  def __init__(self, input_dict, egg_id=None):
-    """This should NEVER be called by users! Use get_egg functions instead."""
-    self._position = convert_vec2d_to_tuple(input_dict['position'])
-    self._holder = input_dict['holder']
-    self._score = input_dict['score']
+  def __init__(self, egg_id):
+    """Get the egg object with egg_id"""
     self._egg_id = egg_id
 
   @property
@@ -180,7 +165,7 @@ class Egg:
   @property
   def position(self) -> VecTuple:
     """Get the coordinate of current egg"""
-    return self._position
+    return convert_vec2d_to_tuple(_eggs[self._egg_id]['position'])
 
   @property
   def holder(self) -> typing.Optional[Player]:
@@ -188,20 +173,17 @@ class Egg:
     Get the player object of holder.
     Returns none if on ground.
     """
-    if self._holder != -1:
-      return Player.get_player(self._holder)
+    _holder = _eggs[self._egg_id]['holder']
+    
+    if _holder != -1:
+      return Player(_holder)
     else:
       return None
 
   @property
   def score(self):
     """Get the score of this egg"""
-    return self._score
-
-  @staticmethod
-  def get_egg(egg_id: int):
-    """Get the egg object with egg_id"""
-    return Egg(_eggs[egg_id], egg_id)
+    return _eggs[self._egg_id]['score']
 
 # public APIs end
 
