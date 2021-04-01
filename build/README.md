@@ -8,6 +8,8 @@
 
 ### 评测逻辑文件下载
 
+`judger.py` 可在上述文件列表下载。
+
 出于安全考虑，评测逻辑只提供构建好的版本，可在 https://github.com/ssast-tech/thuai-egg-releases 进行下载，也可以直接采用下列链接。下载后即可采用 judger.py 和评测逻辑文件配合，进行测试。
 
 - [Windows x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@424312f1/eggs-windows-x86_64)
