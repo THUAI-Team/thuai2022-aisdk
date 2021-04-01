@@ -17,6 +17,7 @@ echo "Building Artifact"
 rm -rf build
 mkdir build
 cp docs/README_template.md build/README.md
+cp judger.py build/
 cd build
 
 mkdir cpp-sdk-$rev
