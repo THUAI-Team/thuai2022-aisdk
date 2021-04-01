@@ -8,7 +8,7 @@
 
 ### 评测逻辑文件下载
 
-`judger.py` 可在上述文件列表下载。这里以使用Python SDK为例，介绍评测的基本方法。
+`judger.py` 可在上述文件列表下载`judger.zip`后解压得到。请不要改变解压后的文件夹结构。这里以使用Python SDK为例，介绍评测的基本方法。
 1. 下载下面文件中和自己系统对应的评测逻辑，并且重命名为 `eggs.exe` 或者 `eggs`
 2. 把评测逻辑，`judger.py`都放到含有`main.py`的文件夹
 3. 在上述文件夹打开一个命令行窗口，然后采用命令 `python ./judger.py eggs.exe python+main.py python+main.py python+main.py eggs replay.bin` 以在 Windows 下进行评测。这条命令会让3个队伍都使用你的AI进行对战。
