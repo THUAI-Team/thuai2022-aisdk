@@ -24,6 +24,7 @@ $ pip install websockets
 
 - [Windows x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@7ae9069c/eggs-windows-x86_64)
   - 注：下载Windows版本后请自行添加.exe后缀
+  - Windows版本存在各种问题，目前暂时不建议使用，建议使用Ubuntu版本
 - [Ubuntu 16.04 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@7ae9069c/eggs-ubuntu-16.04-x86_64)
   - 注：Linux版本下载后需要手动授予可执行权限
 - [Mac OS 10.15 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@7ae9069c/eggs-macos-10.15-x86_64) 
@@ -35,5 +36,26 @@ $ pip install websockets
 上述列表中所列的文件即为比赛所用SDK，点击即可下载。
 
 其中，以cpp开头的是C++ SDK，以py开头的是Python SDK，结尾为SDK版本号。
+注意：Python SDK 需要采用 `pip` 安装 `json_stream_parser` 包
 SDK文档位于压缩包内。
 
+## 回放文件
+
+对于回放文件的解析，可以采用基于 Node.js 的回放文件读取SDK.
+
+使用方法如下：
+
+1. 安装 Node.js
+2. 克隆代码仓库：
+```bash
+$ git clone https://github.com/ssast-tech/thuai-egg-record-sdk
+```
+3. `cd thuai-egg-record-sdk/js_record_sdk`
+4. 安装依赖并构建运行：
+```bash
+$ npm install -g yarn
+$ yarn
+$ yarn build
+$ yarn dist "二进制回放文件的路径"
+```
+此后，JSON格式的回放文件内容即被输出到终端。
