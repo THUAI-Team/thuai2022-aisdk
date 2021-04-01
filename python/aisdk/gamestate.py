@@ -1,4 +1,3 @@
-from __future__ import annotations
 from .utils import write_message_dict, dist
 from .player_movement import PlayerMovement, MovementNotAllowedError
 from .team import Team
