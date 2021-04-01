@@ -16,7 +16,7 @@ $ pip install websockets
 ```
 1. 下载下面文件中和自己系统对应的评测逻辑，并且重命名为 `eggs.exe` 或者 `eggs`
 2. 把评测逻辑，`judger.py`都放到含有`main.py`的文件夹
-3. 在上述文件夹打开一个命令行窗口，然后采用命令 `python ./judger.py eggs.exe python+main.py python+main.py python+main.py eggs replay.bin` 以在 Windows 下进行评测。这条命令会让3个队伍都使用你的AI进行对战。
+3. 在上述文件夹打开一个命令行窗口，然后采用命令 `python ./judger.py eggs.exe python+main.py python+main.py python+main.py replay.bin` 以在 Windows 下进行评测。这条命令会让3个队伍都使用你的AI进行对战。
 
 不过，我们更推荐采用Saiblo进行在线评测，这样和别的AI的对战也会更简单。
 
