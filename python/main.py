@@ -2,7 +2,10 @@ import aisdk
 import aisdk.gamestate as gs
 from aisdk.player_movement import PlayerMovement
 from random import randint
+import os
 
+os.environ["OMP_NUM_THREADS"] = "1" # Single thread
+os.environ["USE_SIMPLE_THREADED_LEVEL3"] = "1"
 
 def update():
   # This Simple AI sets everyone on your team running along -x axis.
