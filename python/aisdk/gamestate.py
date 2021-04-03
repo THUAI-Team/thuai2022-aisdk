@@ -93,7 +93,7 @@ class Player:
     if _current_team != self.team:
       raise AttributeError('Not on your team, cannot change `facing`!')
     else:
-      _set_facing_of_player(self.team, new_facing)
+      _set_facing_of_player(self.id_on_team, new_facing)
   
   @property
   def status(self) -> PlayerMovement:
