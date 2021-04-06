@@ -5,12 +5,12 @@ echo "Revision is $rev"
 
 cd docs/cpp
 echo "Building C++ Intro"
-xelatex cpp-intro.tex
-xelatex cpp-intro.tex
+tectonic cpp-intro.tex
+tectonic cpp-intro.tex
 cd ../python
 echo "Building Python Intro"
-xelatex py-intro.tex
-xelatex py-intro.tex
+tectonic py-intro.tex
+tectonic py-intro.tex
 cd ../..
 
 echo "Building Artifact" 
