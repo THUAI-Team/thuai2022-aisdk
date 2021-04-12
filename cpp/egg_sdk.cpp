@@ -26,6 +26,10 @@ namespace thuai {
   EggStatus GameState::get_egg(int egg_id) {
     return m_eggs[egg_id].get<EggStatus>();
   }
+  
+  Team GameState::current_team() {
+	  return m_current_team;
+  }
 
   void GameState::refresh_reply() {
     m_reply = json({

@@ -96,6 +96,9 @@ SDK中提供的主要数据结构见表\ref{tab:ds}。
 \lstinline{set_facing_of_player(int player_id_in_team, Vec2D facing)}\\[-2pt]
 传入一个向量和本队玩家编号，设置其朝向（用于走路、奔跑）。注意：若传入的是非单位向量，则会将其变为同向单位向量。传入零向量或者模长过小的向量时，评测逻辑行为未定义。
 
+\lstinline{current_team()}
+返回当前AI控制的队伍。
+
 \item[金蛋控制] \lstinline{get_egg(int egg_id)}\\[-2pt]
 传入金蛋编号，获得其基本信息。
 

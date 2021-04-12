@@ -25,6 +25,7 @@ namespace thuai {
     void set_facing_of_player(int player_id_in_team, Vec2D facing);
     void try_grab_egg(int player_id_in_team, int egg);
     void try_drop_egg(int player_id_in_team, double radian);
+	Team current_team();
   };
 }
 
