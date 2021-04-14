@@ -6,10 +6,8 @@ echo "Revision is $rev"
 cd docs/cpp
 echo "Building C++ Intro"
 tectonic cpp-intro.tex
-tectonic cpp-intro.tex
 cd ../python
 echo "Building Python Intro"
-tectonic py-intro.tex
 tectonic py-intro.tex
 cd ../..
 
