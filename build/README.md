@@ -4,7 +4,7 @@
 
 ### 题面下载
 
-点击[链接](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@72ee2c73/statements.pdf)查看题面
+点击[链接](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@5877ccb9/statements.pdf)查看题面
 
 ### 评测逻辑文件下载
 
@@ -22,12 +22,12 @@ $ pip install websockets
 
 出于安全考虑，评测逻辑只提供构建好的版本，可在 https://github.com/ssast-tech/thuai-egg-releases 进行下载，也可以直接采用下列链接。下载后即可采用 judger.py 和评测逻辑文件配合，进行测试。
 
-- [Windows x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@72ee2c73/eggs-windows-x86_64)
+- [Windows x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@5877ccb9/eggs-windows-x86_64)
   - 注：下载Windows版本后请自行添加.exe后缀
   - Windows版本存在各种问题，目前暂时不建议使用，建议使用Ubuntu版本
-- [Ubuntu 16.04 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@72ee2c73/eggs-ubuntu-16.04-x86_64)
+- [Ubuntu 16.04 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@5877ccb9/eggs-ubuntu-16.04-x86_64)
   - 注：Linux版本下载后需要手动授予可执行权限
-- [Mac OS 10.15 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@72ee2c73/eggs-macos-10.15-x86_64) 
+- [Mac OS 10.15 x86_64](https://cdn.jsdelivr.net/gh/ssast-tech/thuai-egg-releases@5877ccb9/eggs-macos-10.15-x86_64) 
   - 注：Mac版本下载后需要手动授予可执行权限
   - 还可能需要设置允许运行未知来源的可执行文件
 
