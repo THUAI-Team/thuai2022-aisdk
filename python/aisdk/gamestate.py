@@ -80,6 +80,14 @@ class Player:
     return convert_vec2d_to_tuple(_teams[self.team][self.id_on_team]['position'])
   
   @property
+  def endurance(self) -> float:
+    """Get the endurance of player"""
+    try:
+      return _teams[self.team][self.id_on_team]['endurance']
+    except KeyError:
+      return -1.0 # backward compatibility
+  
+  @property
   def facing(self) -> VecTuple:
     """Get the facing of player"""
     return convert_vec2d_to_tuple(_teams[self.team][self.id_on_team]['facing'])

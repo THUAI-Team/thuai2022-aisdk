@@ -24,6 +24,11 @@ namespace thuai {
     j.at("position").get_to(p.position);
     j.at("facing").get_to(p.facing);
     j.at("status").get_to(p.status);
+    try {
+      j.at("endurance").get_to(p.endurance);
+    } catch (json::out_of_range &e) {
+      p.endurance = -1.0; // backward compatibility
+    }
   }
 
   void to_json(json& j, const EggStatus& p) {

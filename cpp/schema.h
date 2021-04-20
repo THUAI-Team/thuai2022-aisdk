@@ -32,6 +32,7 @@ namespace thuai {
     Vec2D facing;  // which direction is the player facing?
     PlayerMovement status; // movement status
     int holding; // id of the egg being held
+    double endurance; // current endurance
   };
 
   struct EggStatus {

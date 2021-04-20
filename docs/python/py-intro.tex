@@ -61,6 +61,7 @@
 \texttt{position} & 玩家坐标 & \texttt{position} & 蛋坐标 \\\hhline{|--||--|}
 \texttt{facing} & 表示玩家朝向的单位向量 & \texttt{holder} & 拿蛋玩家，\texttt{None} 表示放在地上\\[0pt]\hhline{|-|-||--|}
 \texttt{status} & 玩家运动状态 & \texttt{score} & 蛋的分数 \\\hhline{|-|-|:==:}
+\texttt{endurance} & 玩家的耐力值，$-1$代表逻辑版本需更新 & \multicolumn{2}{c|}{} \\\hhline{|-|-|:==:}
 \texttt{holding} & 玩家拿的蛋，\texttt{None}表示空手 &\multicolumn{2}{c|}{PlayerMovement}  \\ \hhline{:==:|--|}
 \multicolumn{2}{|c||}{Team} &\texttt{STOPPED} & 玩家停在原地 \\ \hhline{|--||--|} 
 \texttt{RED} & 红队 & \texttt{WALKING} & 玩家正在走路  \\ \hhline{|--||--|}
@@ -91,6 +92,9 @@ SDK中提供的主要数据结构见表\ref{tab:ds}。
 
 \item \lstinline{p.position}\\[-2pt]
 只读。玩家的坐标。
+
+\item \lstinline{p.endurance}\\[-2pt]
+只读。玩家的耐力值。若为 $-1$ 说明读取失败，请更新游戏逻辑。
 
 \item \lstinline{p.team, p.id_on_team}\\[-2pt]
 只读。获得这个玩家所在队伍和队内编号，即上文的 $t, y$。
